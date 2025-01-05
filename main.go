@@ -1,37 +1,32 @@
 package main
 
 import (
-	"database/sql"
 	"log"
-	"os"
 
-	"github.com/joho/godotenv" // To load .env file
+	"github.com/Pk05999/credit_card_validator/config"
+	"github.com/Pk05999/credit_card_validator/database"
+	"github.com/Pk05999/credit_card_validator/routes"
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
-	// Load .env file
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
 
-	// Retrieve environment variables
-	dsn := os.Getenv("DB_DSN")
-	if dsn == "" {
-		log.Fatal("DB_DSN is not set in the environment")
-	}
+	//Load eenvironment variables
+	// config.LoadConfig()
+	config.LoadConfig()
 
-	// Initialize DB connection
-	db, err := sql.Open("mysql", os.Getenv("DB_DSN"))
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer db.Close()
+	//Initialize database
+	database.ConnectDatabase()
 
-	// Test the DB connection
-	if err = db.Ping(); err != nil {
-		log.Fatal("Failed to connect to the database:", err)
-	}
+	//Create Gin router
+	router := gin.Default()
 
-	log.Println("Database connection successful!")
+	//Setup routes
+	routes.RegisterRoutes(router)
+
+	//Start the server
+	port := config.GetConfig().Port
+	log.Printf("Server started on port %s", port)
+	router.Run(":" + port)
+
 }
