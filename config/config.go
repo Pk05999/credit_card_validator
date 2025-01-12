@@ -8,38 +8,24 @@ import (
 )
 
 type Config struct {
-	Port   string
-	DbUser string
-	DbPass string
 	DbHost string
 	DbPort string
+	DbUser string
+	DbPass string
 	DbName string
 }
 
-var config Config
-
-func LoadConfig() {
-	if err := godotenv.Load(); err != nil {
-		log.Fatal("Error loading .env file")
-	}
-
-	config = Config{
-		Port:   getEnv("PORT", "8080"),
-		DbUser: getEnv("DB_USER", "root"),
-		DbPass: getEnv("DB_PASSWORD", ""),
-		DbHost: getEnv("DB_HOST", "localhost"),
-		DbPort: getEnv("DB_PORT", "3306"),
-		DbName: getEnv("DB_NAME", "credit_card_db"),
-	}
-}
-
 func GetConfig() Config {
-	return config
-}
-
-func getEnv(key, fallback string) string {
-	if value, exists := os.LookupEnv(key); exists {
-		return value
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatalf("Error loading .env file")
 	}
-	return fallback
+
+	return Config{
+		DbHost: os.Getenv("DB_HOST"),
+		DbPort: os.Getenv("DB_PORT"),
+		DbUser: os.Getenv("DB_USER"),
+		DbPass: os.Getenv("DB_PASS"),
+		DbName: os.Getenv("DB_NAME"),
+	}
 }

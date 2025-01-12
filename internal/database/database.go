@@ -5,7 +5,7 @@ import (
 	"log"
 
 	"github.com/Pk05999/credit_card_validator/config"
-	"github.com/Pk05999/credit_card_validator/models"
+	"github.com/Pk05999/credit_card_validator/internal/models"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
