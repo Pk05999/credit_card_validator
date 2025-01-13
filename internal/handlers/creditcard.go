@@ -26,3 +26,13 @@ func AddCreditCard(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"message": "Card added successfully", "is_valid": isValid})
 }
+
+func GetAllCards(c *gin.Context) {
+	cards, err := services.GetAllCards()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, cards)
+}

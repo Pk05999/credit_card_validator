@@ -9,6 +9,6 @@ func SetupRoutes(r *gin.Engine) {
 	api := r.Group("/api/v1")
 	{
 		api.POST("/cards", handlers.AddCreditCard)
-		// api.GET("/cards", handlers.GetAllCards)
+		api.GET("/cards", handlers.GetAllCards)
 	}
 }

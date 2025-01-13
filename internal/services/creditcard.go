@@ -38,3 +38,7 @@ func LuhnAlgorithm(card string) bool {
 	}
 	return sum%10 == 0
 }
+
+func GetAllCards() ([]models.CreditCard, error) {
+	return repositories.GetAllCards()
+}
